@@ -47,6 +47,8 @@ def main():
 
   while 1:
     a=pressed()
+    if a not in ["\n",""] and not notes: 
+      outp=["0","0","0","0"]
     if a not in ["","\n"]: notes.append(a)
     if a=="\n":
       if keys[0] in notes: outp[0]="1"
@@ -54,14 +56,13 @@ def main():
       if keys[2] in notes: outp[2]="1"
       if keys[3] in notes: outp[3]="1"
       subprocess.Popen(["beep","-f "+freq["".join(outp)]])
-      outp=["0","0","0","0"]
       notes=[]
 
-
-try:
-  main()
-except KeyboardInterrupt:
-  exit()
+if __name__=="__main__":
+  try:
+    main()
+  except:
+    exit()
 
 
   
