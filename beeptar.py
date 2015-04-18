@@ -10,12 +10,10 @@ def pressed():
   def isData():
     return select.select([sys.stdin], [], [], 0.01)==([sys.stdin], [], [])
 
-  c=""
   old_settings=termios.tcgetattr(sys.stdin)
   try:
     tty.setcbreak(sys.stdin.fileno())
-    if isData():
-      c=sys.stdin.read(1)
+    c=sys.stdin.read(1) if isData() else ""
   finally:
     termios.tcsetattr(sys.stdin, termios.TCSADRAIN, old_settings)
     return c
@@ -47,22 +45,10 @@ def main():
 
   while 1:
     a=pressed()
-    if a not in ["\n",""] and not notes: 
-      outp=["0","0","0","0"]
     if a not in ["","\n"]: notes.append(a)
     if a=="\n":
-      if keys[0] in notes: outp[0]="1"
-      if keys[1] in notes: outp[1]="1"
-      if keys[2] in notes: outp[2]="1"
-      if keys[3] in notes: outp[3]="1"
+      if notes: outp=["1" if keys[i] in notes else "0" for i in range(4)]
       subprocess.Popen(["beep","-f "+freq["".join(outp)]])
       notes=[]
 
-if __name__=="__main__":
-  try:
-    main()
-  except:
-    exit()
-
-
-  
+main()
