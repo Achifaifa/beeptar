@@ -45,4 +45,3 @@ while 1:
     if notes: outp=["1" if keys[i] in notes else "0" for i in range(4)]
     subprocess.Popen(["beep","-f "+freq["".join(outp)]])
     notes=[]
-
